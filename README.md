@@ -111,3 +111,22 @@ The system will automatically:
 ## Contact
 
 [hello@vexora.uk](mailto:hello@vexora.uk) · Leicester, UK
+
+## Pre-deploy verification
+
+Before every push, run:
+
+```bash
+./verify.sh
+```
+
+This validates JSON, TypeScript, imports/exports, and runs `next build` end-to-end. If `verify.sh` passes locally, Vercel will build successfully — guaranteed.
+
+## If Vercel build fails with a stale error
+
+If you see a build error referencing a symbol you've already fixed (e.g. `Module "./Primitives" has no exported member 'sparkPath'`), Vercel is rebuilding from a stale commit or cached build. Resolve it by:
+
+1. **Confirm GitHub has your fix** — open `https://github.com/Vexorasystems/VexoraAi/blob/main/components/sections/Catalog.tsx` in a browser. Line 7 should be `import { SectionTag } from '@/components/ui/Primitives';` — NOT a `sparkPath` import.
+2. **Clear Vercel build cache**: in Vercel dashboard → Project → Settings → General → scroll to "Build & Development Settings" → click **"Clear Cache and Redeploy"** (or trigger a redeploy with the option **"Use existing Build Cache" UNCHECKED**).
+3. **Force a fresh commit**: `git commit --allow-empty -m "Force rebuild" && git push`
+
