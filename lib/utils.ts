@@ -44,3 +44,15 @@ export const REGIONS = ['EMEA', 'NA', 'APAC', 'LATAM', 'MEA'];
 export function pickVerbs(industry: string): string[] {
   return INDUSTRY_VERBS[industry] || ['signal reconciled', 'workflow executed', 'anomaly auto-resolved', 'route optimised'];
 }
+
+// Deterministic SVG sparkline path — server-safe, used by SystemCard
+export function sparkPath(seed: number): string {
+  let s = seed;
+  function r() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+  const points: [number, number][] = Array.from({ length: 24 }, (_, i) => {
+    const x = (i / 23) * 100;
+    const y = 9 + Math.sin(i * 0.5 + seed) * 4 + (r() - 0.5) * 3;
+    return [x, Math.max(1, Math.min(17, y))];
+  });
+  return points.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
+}

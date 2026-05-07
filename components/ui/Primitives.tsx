@@ -95,17 +95,3 @@ export function SectionTag({ num, label }: { num: string; label: string }) {
     </div>
   );
 }
-
-// ============================================================
-// Sparkline SVG path generator
-// ============================================================
-export function sparkPath(seed: number) {
-  let s = seed;
-  function r() { s = (s * 9301 + 49297) % 233280; return s / 233280; }
-  const points = Array.from({ length: 24 }, (_, i) => {
-    const x = (i / 23) * 100;
-    const y = 9 + Math.sin(i * 0.5 + seed) * 4 + (r() - 0.5) * 3;
-    return [x, Math.max(1, Math.min(17, y))];
-  });
-  return points.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
-}
