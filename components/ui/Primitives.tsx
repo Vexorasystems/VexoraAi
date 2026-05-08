@@ -97,8 +97,18 @@ export function SectionTag({ num, label }: { num: string; label: string }) {
 }
 
 // ============================================================
-// Re-export utility helpers so code importing them from this
-// barrel (e.g. `import { sparkPath } from './Primitives'`)
-// resolves correctly. Canonical source is `@/lib/utils`.
+// sparkPath — deterministic SVG sparkline path generator
+// Defined here as a primary, first-class named export so any
+// file in the project can import it from this module without
+// transitive resolution. Also defined in lib/utils.ts.
 // ============================================================
-export { sparkPath } from '@/lib/utils';
+export function sparkPath(seed: number): string {
+  let s = seed;
+  function r(): number { s = (s * 9301 + 49297) % 233280; return s / 233280; }
+  const points: [number, number][] = Array.from({ length: 24 }, (_, i) => {
+    const x = (i / 23) * 100;
+    const y = 9 + Math.sin(i * 0.5 + seed) * 4 + (r() - 0.5) * 3;
+    return [x, Math.max(1, Math.min(17, y))];
+  });
+  return points.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
+}
