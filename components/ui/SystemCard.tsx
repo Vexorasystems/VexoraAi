@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import type { VexSystem } from '@/lib/systems';
 import { deriveStackType } from '@/lib/systems';
-import { sparkPath } from './Primitives';
+import sparkPath from './Primitives';
 
 interface SystemCardProps {
   system: VexSystem;
