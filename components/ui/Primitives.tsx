@@ -95,3 +95,10 @@ export function SectionTag({ num, label }: { num: string; label: string }) {
     </div>
   );
 }
+
+// ============================================================
+// Re-export utility helpers so code importing them from this
+// barrel (e.g. `import { sparkPath } from './Primitives'`)
+// resolves correctly. Canonical source is `@/lib/utils`.
+// ============================================================
+export { sparkPath } from '@/lib/utils';
