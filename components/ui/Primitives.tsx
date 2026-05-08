@@ -98,9 +98,10 @@ export function SectionTag({ num, label }: { num: string; label: string }) {
 
 // ============================================================
 // sparkPath — deterministic SVG sparkline path generator
-// Defined here as a primary, first-class named export so any
-// file in the project can import it from this module without
-// transitive resolution. Also defined in lib/utils.ts.
+// Exported as BOTH named and default so any import style resolves:
+//   import { sparkPath } from './Primitives';   ← named
+//   import sparkPath from './Primitives';       ← default
+//   import sparkPath, { ArchBrackets } from './Primitives';  ← mixed
 // ============================================================
 export function sparkPath(seed: number): string {
   let s = seed;
@@ -112,3 +113,5 @@ export function sparkPath(seed: number): string {
   });
   return points.map((p, i) => (i === 0 ? `M${p[0]} ${p[1]}` : `L${p[0]} ${p[1]}`)).join(' ');
 }
+
+export default sparkPath;
